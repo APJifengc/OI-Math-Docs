@@ -64,3 +64,81 @@ int equiv(int a, int b, int c) {
     } else return -1;
 }
 ```
+
+<div style="page-break-after: always;"></div>
+
+## 逆元
+求解 $ax\equiv 1\pmod{p}$ 的最小整数解，记 $x=a^{-1}$ 为 $a$ 的逆元。
+1.  $p$ 为质数时，由费马小定理（$x^p\equiv x\pmod{p}$）得 $x=a^{-1}=a^{p-2} \bmod p$。
+    ```cpp
+    #define inv(a, p) qpow(a, p - 2, p)
+    ```
+2.  $\gcd(a,p)=1$ 时， 解同余方程即可得出。
+    ```cpp
+    #define inv(a, p) equiv(a, 1, p)
+    ```
+3.  $\gcd(a,p)\ne1$ 时， $a$ 不存在逆元。
+
+**TODO:** 线性求逆元
+
+<div style="page-break-after: always;"></div>
+
+## 中国剩余定理（CRT）
+
+求解
+$$\left\{\begin{aligned}
+x&\equiv a_1 \pmod{m_1} \\
+x&\equiv a_2 \pmod{m_2} \\
+&\ \ \vdots\\
+x&\equiv a_n \pmod{m_n} \\
+\end{aligned}\right.$$
+（$m_i$ 两两互质）的最小整数解。
+
+设 $M = \prod_{i=1}^nm_i$， $M_i=\frac{M}{m_i}$， $c_i$ 为模 $m_i$ 意义下 $M_i$ 的乘法逆元，则方程最小整数解为
+
+$$x=\sum_{i=1}^nc_iM_ia_i \bmod M$$
+
+```cpp
+int CRT(int n, int a[], int m[]) {
+    int M = 1; for (int i = 1; i <= n; i++) M *= m[i];
+    int ans = 0;
+    for (int i = 1; i <= n; i++) ans = (ans + inv(M / m[i]) * M / M[i] * a[i]) % M;
+    return ans;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+## 拓展中国剩余定理（exCRT）
+
+问题同中国剩余定理（CRT），但 $m_i$ 不保证两两互质。
+
+$$\begin{array}{llr}
+& \left\{
+    \begin{aligned}
+    x\equiv a_1 \pmod{m_1}\\
+    x\equiv a_2 \pmod{m_2}
+    \end{aligned}
+\right.  \\
+\Rightarrow & \left\{
+    \begin{aligned}
+    x+y_1m_1 = a_1\\
+    x-y_2m_2 = a_2
+    \end{aligned}
+\right.\\
+\Rightarrow & y_1m_1 + y_2m_2 = a_1 - a_2\\
+\Rightarrow & \mathrm{linearEquation}(m_1,m_2,a_1-a_2) \rightarrow (y_{1_0},y_{2_0})\\
+\Rightarrow & x\equiv a_1 - y_1m_1 \pmod{\mathrm{lcm}(m_1,m_2)}
+\end{array}$$
+
+```cpp
+int exCRT(int n, int a[], int m[]) {
+    int A = a[1], M = m[1];
+    for (int i = 2; i <= n; i++) {
+        if (A < a[i]) swap(A, a[i]), swap(M, m[i]);
+        int x, y; 
+        if (!linearEquation(M, m[i], A - a[i], x, y)) return -1;
+        A = A - x * M, M = M / gcd(M, m[i]) * m[i];
+    }
+}
+```
