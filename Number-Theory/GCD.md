@@ -79,8 +79,19 @@ int equiv(int a, int b, int c) {
     ```
 3.  $\gcd(a,p)\ne1$ 时， $a$ 不存在逆元。
 
-**TODO:** 线性求逆元
-
+### 线性求逆元
+设 $p = k \times i + q$ $(r<i,1<i<p)$， 则
+$$\begin{aligned}
+k\times i+r&\equiv 0&\pmod{p}\\
+k\times r^{-1}+i^{-1}&\equiv 0&\pmod{p}\\
+i^{-1} &\equiv-k\times r^{-1}&\pmod{p}\\
+i^{-1}&=p-\lfloor\frac{p}{i}\rfloor\times (p\bmod i)^{-1}
+\end{aligned}$$
+```cpp
+inv[1] = 1;
+for (int i = 2; i <= n; i++) 
+    inv[i] = p - (p / i) * inv[p % i] % p;
+```
 <div style="page-break-after: always;"></div>
 
 ## 中国剩余定理（CRT）
@@ -102,7 +113,8 @@ $$x=\sum_{i=1}^nc_iM_ia_i \bmod M$$
 int CRT(int n, int a[], int m[]) {
     int M = 1; for (int i = 1; i <= n; i++) M *= m[i];
     int ans = 0;
-    for (int i = 1; i <= n; i++) ans = (ans + inv(M / m[i]) * M / M[i] * a[i]) % M;
+    for (int i = 1; i <= n; i++) 
+        ans = (ans + inv(M / m[i]) * M / M[i] * a[i]) % M;
     return ans;
 }
 ```
