@@ -7,7 +7,7 @@ int gcd(int a, int b) {
 ```
 
 ## exGCD
-求解 $ax+by=\gcd(a,b)$ 的一组特解 $\left\{\begin{aligned}x=x_0\\y=y_0\end{aligned}\right.$。
+求解 $ax+by=\gcd(a,b)$ 的一组特解 $\begin{cases}x=x_0\\y=y_0\end{cases}$。
 $$\mathrm{exgcd}(a,b)\rightarrow(d,x_0,y_0)$$
 ```cpp
 void exgcd(int a, int b, int &d, int &x, int &y) {
@@ -22,14 +22,14 @@ void exgcd(int a, int b, int &d, int &x, int &y) {
 <div style="page-break-after: always;"></div>
 
 ## 二元一次不定方程
-求解 $ax+by=c$ 的一组特解 $\left\{\begin{aligned}x=x_0\\y=y_0\end{aligned}\right.$。
+求解 $ax+by=c$ 的一组特解 $\begin{cases}x=x_0\\y=y_0\end{cases}$。
 
 $$\begin{array}{rl}
             & \mathrm{exgcd}(a,b)\rightarrow(d,x_0,y_0)\\
 \Rightarrow & ax_0+by_0=\gcd(a,b)\\
 \Rightarrow & a\frac{x_0}{\gcd(a,b)}+b\frac{y_0}{\gcd(a,b)}y=1\\
 \Rightarrow & a\frac{x_0c}{\gcd(a,b)}+b\frac{y_0c}{\gcd(a,b)}=c\\
-\Rightarrow & \left\{\begin{aligned}x=\frac{x_0c}{\gcd(a,b)}\\y=\frac{y_0c}{\gcd(a,b)}\end{aligned}\right.
+\Rightarrow & \begin{cases}x=\frac{x_0c}{\gcd(a,b)}\\y=\frac{y_0c}{\gcd(a,b)}\end{cases}
 \end{array}$$
 
 有解条件： $c \bmod \gcd(a,b) = 0$。
@@ -97,12 +97,12 @@ for (int i = 2; i <= n; i++)
 ## 中国剩余定理（CRT）
 
 求解
-$$\left\{\begin{aligned}
+$$\begin{cases}
 x&\equiv a_1 \pmod{m_1} \\
 x&\equiv a_2 \pmod{m_2} \\
 &\ \ \vdots\\
 x&\equiv a_n \pmod{m_n} \\
-\end{aligned}\right.$$
+\end{cases}$$
 （$m_i$ 两两互质）的最小整数解。
 
 设 $M = \prod_{i=1}^nm_i$， $M_i=\frac{M}{m_i}$， $c_i$ 为模 $m_i$ 意义下 $M_i$ 的乘法逆元，则方程最小整数解为
@@ -126,18 +126,14 @@ int CRT(int n, int a[], int m[]) {
 问题同中国剩余定理（CRT），但 $m_i$ 不保证两两互质。
 
 $$\begin{array}{llr}
-& \left\{
-    \begin{aligned}
+& \begin{cases}
     x\equiv a_1 \pmod{m_1}\\
     x\equiv a_2 \pmod{m_2}
-    \end{aligned}
-\right.  \\
-\Rightarrow & \left\{
-    \begin{aligned}
+    \end{cases}\\
+\Rightarrow & \begin{cases}
     x+y_1m_1 = a_1\\
     x-y_2m_2 = a_2
-    \end{aligned}
-\right.\\
+    \end{cases} \\
 \Rightarrow & y_1m_1 + y_2m_2 = a_1 - a_2\\
 \Rightarrow & \mathrm{linearEquation}(m_1,m_2,a_1-a_2) \rightarrow (y_{1_0},y_{2_0})\\
 \Rightarrow & x\equiv a_1 - y_1m_1 \pmod{\mathrm{lcm}(m_1,m_2)}
