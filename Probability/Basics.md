@@ -5,8 +5,6 @@
 3.  全概率公式： $\displaystyle P(B) = \sum_{i=1}^nP(A_i)P(B|A_i)$
 4.  贝叶斯公式： $\displaystyle P(B_i|A)=\frac{P(B_i)P(A|B_i)}{\displaystyle \sum_{j=1}^n P(B_j)P(A|B_j)}$
 
-<div style="page-break-after: always;"></div>
-
 ## 期望
 
 1.  $E(X)$ 表示 $X$ 的期望。 
