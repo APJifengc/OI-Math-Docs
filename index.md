@@ -7,12 +7,12 @@
 [TOC]
 <div style="page-break-after: always;"></div>
 
-@import "Number-Theory\index.md"
+@import "Number-Theory/index.md"
 
 <div style="page-break-after: always;"></div>
 
-@import "Combinatorics\index.md"
+@import "Combinatorics/index.md"
 
 <div style="page-break-after: always;"></div>
 
-@import "Probability\index.md"
+@import "Probability/index.md"
